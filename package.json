@@ -1,0 +1,23 @@
+{
+  "name": "keksobooking",
+  "version": "1.0.0",
+  "description": "Личный проект «Pink» от HTML Academy, Профессия «Фронтенд-разработчик 2», Модуль 3. JavaScript. Профессиональная разработка веб-интерфейсов",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Master",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": ""
+  },
+  "private": true,
+  "engines": {
+    "node": "20.x",
+    "npm": "10.x"
+  }
+}
