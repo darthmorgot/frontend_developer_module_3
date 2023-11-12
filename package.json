@@ -10,11 +10,12 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/darthmorgot/frontend_developer_module_3"
   },
   "bugs": {
-    "url": ""
+    "url": "https://github.com/darthmorgot/frontend_developer_module_3/issues"
   },
+  "homepage": "https://github.com/darthmorgot/frontend_developer_module_3#readme",
   "private": true,
   "engines": {
     "node": "20.x",
