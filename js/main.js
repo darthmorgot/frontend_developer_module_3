@@ -1,8 +1,18 @@
-console.log('test');
+function getRandomInteger(from = 0, to = 10) {
+  if (typeof from === 'string' || typeof to === 'string') {
+    return 'Необходимо ввести число';
+  }
 
-function sum(a, b) {
-  return a + b;
+  if (from < 0 || to < 0) {
+    return 'Необходимо число больше или равное нулю';
+  }
+
+  return Math.floor(Math.random() * (to - from + 1) + from);
 }
 
-console.log(sum(5, 8));
-console.log('15 + 8 =', sum(15, 8));
+function getRandomFloatingPointNumber(from, to) {
+  return Math.random() * (to - from + 1) + from;
+}
+
+getRandomInteger(2, 8);
+getRandomFloatingPointNumber(5, 9);
