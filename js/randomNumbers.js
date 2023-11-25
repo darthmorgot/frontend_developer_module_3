@@ -2,7 +2,7 @@
  * Функция, проверяющая входящие параметры
  * @param params Массив входящих параметров
  */
-function checkParams(...params) {
+const checkParams = (...params) => {
   for (let i = 0; i < params.length; i++) {
     if (typeof params[i] !== 'number' || Number.isNaN(params[i])) {
       throw 'Необходимо ввести число.';
@@ -20,7 +20,7 @@ function checkParams(...params) {
  * @param to Верхняя граница диапазона
  * @returns {number} Случайное целое число
  */
-function getRandomInteger(from = 1, to = 0) {
+const getRandomInteger = (from = 1, to = 0) => {
   checkParams(from, to);
 
   if (!Number.isInteger(from) || !Number.isInteger(to)) {
@@ -37,7 +37,7 @@ function getRandomInteger(from = 1, to = 0) {
  * @param decimalPlaces Количество знаков после запятой
  * @returns {number} Случайное число с заданным количеством знаков после запятой
  */
-function getRandomFloatingPointNumber(from = 1, to = 0, decimalPlaces = 1) {
+const getRandomFloatingPointNumber = (from = 1, to = 0, decimalPlaces = 1) => {
   checkParams(from, to, decimalPlaces);
 
   let randNum = Math.random() * (to - from) + from;
