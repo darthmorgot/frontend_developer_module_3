@@ -1,18 +1,20 @@
-/**
- * Функция, проверяющая входящие параметры
- * @param params Массив входящих параметров
- */
-const checkParams = (...params) => {
-  for (let i = 0; i < params.length; i++) {
-    if (typeof params[i] !== 'number' || Number.isNaN(params[i])) {
-      throw 'Необходимо ввести число.';
-    }
+// Закомментированное возможно придется удалить
 
-    if (params[i] < 0) {
-      throw 'Необходимо число больше или равное нулю.';
-    }
-  }
-}
+// /**
+//  * Функция, проверяющая входящие параметры
+//  * @param params Массив входящих параметров
+//  */
+// const checkParams = (...params) => {
+//   for (let i = 0; i < params.length; i++) {
+//     if (typeof params[i] !== 'number' || Number.isNaN(params[i])) {
+//       throw 'Необходимо ввести число.';
+//     }
+//
+//     if (params[i] < 0) {
+//       throw 'Необходимо число больше или равное нулю.';
+//     }
+//   }
+// }
 
 /**
  * Функция, возвращающая случайное целое число из переданного диапазона включительно.
@@ -21,11 +23,11 @@ const checkParams = (...params) => {
  * @returns {number} Случайное целое число
  */
 const getRandomInteger = (from = 1, to = 0) => {
-  checkParams(from, to);
+  // checkParams(from, to);
 
-  if (!Number.isInteger(from) || !Number.isInteger(to)) {
-    throw 'Необходимо ввести целое число';
-  }
+  // if (!Number.isInteger(from) || !Number.isInteger(to)) {
+  //   throw 'Необходимо ввести целое число';
+  // }
 
   return Math.floor(Math.random() * (to - from + 1) + from);
 }
@@ -38,7 +40,7 @@ const getRandomInteger = (from = 1, to = 0) => {
  * @returns {number} Случайное число с заданным количеством знаков после запятой
  */
 const getRandomFloatingPointNumber = (from = 1, to = 0, decimalPlaces = 1) => {
-  checkParams(from, to, decimalPlaces);
+  // checkParams(from, to, decimalPlaces);
 
   let randNum = Math.random() * (to - from) + from;
 
