@@ -1,4 +1,4 @@
-import {createListAdvertisements} from './setup.js';
+import {createListAdvertisements} from './create-advertisements.js';
 
 const ADVERTISEMENT_COUNT = 10;
 
