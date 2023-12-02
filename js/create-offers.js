@@ -5,7 +5,7 @@ const getRandomFeaturesElement = () => getRandomArrayElement(FEATURES);
 
 const getRandomPhotosElement = () => getRandomArrayElement(PHOTOS);
 
-const createAdvertisement = () => {
+const createOffer = () => {
   let num = getRandomInteger(1, 10);
   let coordOne = getRandomFloatingPointNumber(35.65000, 35.70000, 5);
   let coordTwo = getRandomFloatingPointNumber(139.70000, 139.80000, 5);
@@ -27,7 +27,7 @@ const createAdvertisement = () => {
       checkin: hour,
       checkout: hour,
       features: [...new Set(features)],
-      description: `Великолепная съемная недвижимость в центре Токио. Подходит как туристам, так и бизнесменам. Квартира полностью укомплектована и недавно отремонтирована.`,
+      description: `Великолепная съемная недвижимость в центре Токио.`,
       photos: [...new Set(photos)]
     },
     location: {
@@ -37,6 +37,6 @@ const createAdvertisement = () => {
   }
 };
 
-const createListAdvertisements = (count) => createArray(count, createAdvertisement);
+const createListOffers = (count) => createArray(count, createOffer);
 
-export {createListAdvertisements}
+export {createListOffers}
