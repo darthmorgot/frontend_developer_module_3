@@ -1,1 +1,3 @@
-import './generate-similar-offers.js';
+import {createListSimilarOffers} from './generate-similar-offers.js';
+
+createListSimilarOffers();
