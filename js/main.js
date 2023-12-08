@@ -1,5 +1,5 @@
 import {deactivateForm, activateForm} from './manage-form.js'
-import {createListSimilarOffers} from './generate-similar-offers.js';
+import {renderListSimilarOffers} from './generate-similar-offers.js';
 
 const mapCanvas = document.querySelector('.map__canvas');
 
@@ -9,4 +9,4 @@ mapCanvas.addEventListener('click', (evt) => {
 }, {once: true});
 
 deactivateForm();
-createListSimilarOffers();
+renderListSimilarOffers();
