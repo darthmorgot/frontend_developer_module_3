@@ -14,7 +14,7 @@ const similarOffersTemplate = document.querySelector('#card')
   .content
   .querySelector('.popup');
 
-const createListSimilarOffers = () => {
+const renderListSimilarOffers = () => {
   const listSimilarOffers = createListOffers(OFFER_COUNT);
 
   listSimilarOffers.forEach(({author, offer, location}) => {
@@ -83,4 +83,4 @@ const createListSimilarOffers = () => {
   });
 };
 
-export {createListSimilarOffers}
+export {renderListSimilarOffers}
