@@ -3,5 +3,5 @@ module.exports = {
     baseDir: './'
   },
   files: ['*.html', 'css/*.css', 'js/*.js'],
-  browser: "chrome",
+  browser: 'chrome',
 };
