@@ -14,6 +14,9 @@ const similarOffersTemplate = document.querySelector('#card')
   .content
   .querySelector('.popup');
 
+/**
+ * Функция выводит на страницу список похожих объявлений.
+ */
 const renderListSimilarOffers = () => {
   const listSimilarOffers = createListOffers(OFFER_COUNT);
 
