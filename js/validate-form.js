@@ -1,3 +1,4 @@
+const body = document.querySelector('body');
 const form = document.querySelector('.ad-form');
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
@@ -13,35 +14,89 @@ pristine.addValidator(form.querySelector('#price'), (value) => {
   return value >= 0 && value <= 100000;
 }, 'От 0 до 100000');
 
+const roomNumber = form.querySelector('#room_number');
+const capacity = form.querySelector('#capacity');
+const roomNumberOption = {
+  '1': ['1'],
+  '2': ['1', '2'],
+  '3': ['1', '2', '3'],
+  '100': ['0']
+};
+
 /**
- * Функция, показывающая сообщение об успешной отправке формы.
+ * Функция для валидации выбранных полей.
+ * @returns {*} true / false
  */
-const showError = () => {
-  const errorElement = errorTemplate.cloneNode(true);
-  const errorButton = errorElement.querySelector('.error__button');
-  errorButton.addEventListener('click', () => {
-    errorElement.remove();
+const validateRoomNumber = () => {
+  return roomNumberOption[roomNumber.value].includes(capacity.value);
+};
+
+/**
+ * Функция для выбора сообщения об ошибке.
+ * @returns {string} Один из вариантов текста об ошибке.
+ */
+const getErrorMessage = () => {
+  switch (roomNumber.value) {
+    case '1':
+      return '1 комната для 1 гостя';
+    case '2':
+      return '2 комнаты для 1 или 2 гостей';
+    case '3':
+      return '3 комнаты для 1, 2 или 3 гостей';
+    case '100':
+      return 'не для гостей';
+  }
+}
+
+pristine.addValidator(roomNumber, validateRoomNumber, getErrorMessage);
+pristine.addValidator(capacity, validateRoomNumber, getErrorMessage);
+
+/**
+ * Функция для закрытия сообщения.
+ * @param element Элемент сообщения, которое надо закрыть.
+ */
+const deleteMessage = (element) => {
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape') {
+      element.remove();
+    }
   }, {once: true});
-  form.append(errorElement);
+  document.addEventListener('click', () => {
+    element.remove();
+  }, {once: true});
 };
 
 /**
  * Функция, показывающая сообщение об ошибке при заполнении формы.
  */
-const showSuccess = () => {
-  const successElement = successTemplate.cloneNode(true);
-  document.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape') {
-      successElement.remove();
-    }
+const showErrorMessage = () => {
+  const errorMessage = errorTemplate.cloneNode(true);
+  const errorButton = errorMessage.querySelector('.error__button');
+
+  errorButton.addEventListener('click', () => {
+    errorMessage.remove();
   }, {once: true});
-  document.addEventListener('click', () => {
-    successElement.remove();
-  }, {once: true});
-  form.append(successElement);
+
+  deleteMessage(errorMessage);
+
+  body.append(errorMessage);
+};
+
+/**
+ * Функция, показывающая сообщение об успешной отправке формы.
+ */
+const showSuccessMessage = () => {
+  const successMessage = successTemplate.cloneNode(true);
+
+  deleteMessage(successMessage);
+
+  body.append(successMessage);
   form.reset();
 };
 
+/**
+ * Функция валидации формы.
+ */
 const formValidate = () => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
@@ -49,9 +104,9 @@ const formValidate = () => {
     const isValid = pristine.validate();
 
     if (isValid) {
-      showSuccess();
+      showSuccessMessage();
     } else {
-      showError();
+      showErrorMessage();
     }
   });
 };
