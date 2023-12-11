@@ -642,6 +642,7 @@ fieldset {
 }
 
 .ad-form__error {
+  display: block;
   color: #c00;
 }
 
