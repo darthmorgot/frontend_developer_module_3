@@ -1,3 +1,7 @@
+import {synchronizeTimeInTimeOut} from './validate-timein-timeout.js';
+import {validatePrice} from './validate-price.js';
+import {validateRoomsPlaces} from './validate-rooms-places.js';
+
 const body = document.querySelector('body');
 const form = document.querySelector('.ad-form');
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
@@ -10,50 +14,13 @@ const pristine = new Pristine(form, {
   errorTextClass: 'ad-form__error',
 });
 
-pristine.addValidator(form.querySelector('#price'), (value) => {
-  return value >= 0 && value <= 100000;
-}, 'От 0 до 100000');
-
-const roomNumber = form.querySelector('#room_number');
-const capacity = form.querySelector('#capacity');
-const roomNumberOption = {
-  '1': ['1'],
-  '2': ['1', '2'],
-  '3': ['1', '2', '3'],
-  '100': ['0']
-};
-
-/**
- * Функция для валидации выбранных полей.
- * @returns {*} true / false
- */
-const validateRoomNumber = () => {
-  return roomNumberOption[roomNumber.value].includes(capacity.value);
-};
-
-/**
- * Функция для выбора сообщения об ошибке.
- * @returns {string} Один из вариантов текста об ошибке.
- */
-const getErrorMessage = () => {
-  switch (roomNumber.value) {
-    case '1':
-      return '1 комната для 1 гостя';
-    case '2':
-      return '2 комнаты для 1 или 2 гостей';
-    case '3':
-      return '3 комнаты для 1, 2 или 3 гостей';
-    case '100':
-      return 'не для гостей';
-  }
-}
-
-pristine.addValidator(roomNumber, validateRoomNumber, getErrorMessage);
-pristine.addValidator(capacity, validateRoomNumber, getErrorMessage);
+validatePrice();
+validateRoomsPlaces();
+synchronizeTimeInTimeOut();
 
 /**
  * Функция для закрытия сообщения.
- * @param element Элемент сообщения, которое надо закрыть.
+ * @param element Сообщения, которое надо закрыть.
  */
 const deleteMessage = (element) => {
   document.addEventListener('keydown', (evt) => {
@@ -91,6 +58,7 @@ const showSuccessMessage = () => {
   deleteMessage(successMessage);
 
   body.append(successMessage);
+  form.submit();
   form.reset();
 };
 
