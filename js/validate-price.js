@@ -1,5 +1,3 @@
-import './form-slider.js';
-
 const form = document.querySelector('.ad-form');
 
 const pristine = new Pristine(form, {
@@ -18,6 +16,32 @@ const typeOption = {
   'house': 5000,
   'palace': 10000
 };
+const sliderElement = form.querySelector('.ad-form__slider');
+
+/**
+ * Конфиг для слайдера выбора цены за ночь
+ */
+noUiSlider.create(sliderElement, {
+  range: {
+    min: 0,
+    max: 100000,
+  },
+  start: 5000,
+  step: 1000,
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      return value;
+    },
+    from: function (value) {
+      return parseFloat(value);
+    },
+  },
+});
+
+priceField.addEventListener('change', (evt) => {
+  sliderElement.noUiSlider.set(evt.target.value);
+});
 
 /**
  * Функция для получения сообщения об ошибке.
@@ -40,8 +64,14 @@ const validatePrice = () => {
     return value <= 100000;
   }, `Не больше 100000`);
 
+  sliderElement.noUiSlider.on('update', () => {
+    priceField.value = sliderElement.noUiSlider.get();
+    pristine.validate(priceField);
+  });
+
   typeField.addEventListener('change', (evt) => {
     priceField.placeholder = typeOption[evt.target.value];
+    sliderElement.noUiSlider.set(typeOption[evt.target.value]);
     pristine.validate(priceField);
   });
 };
