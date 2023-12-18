@@ -1032,3 +1032,41 @@ fieldset {
 .hidden {
   display: none;
 }
+
+/**
+ * Стили для слайдера выбора цены
+ */
+.ad-form__slider {
+  width: calc(100% - 20px);
+  height: 5px;
+  margin-top: 4px;
+}
+
+.ad-form__slider .noUi-connect {
+  background-color: #ff6547;
+}
+
+.ad-form__slider .noUi-handle {
+  width: 24px;
+  height: 12px;
+  top: -4px;
+  cursor: pointer;
+}
+
+.ad-form__slider .noUi-handle:focus {
+  outline: none;
+  -webkit-box-shadow: 0 0 2px 2px #ff6547;
+  box-shadow: 0 0 2px 2px #ff6547;
+}
+
+.ad-form__slider .noUi-handle::before,
+.ad-form__slider .noUi-handle::after {
+  height: 6px;
+  top: 2px;
+  left: 9px;
+  background-color: #d9d9d9;
+}
+
+.ad-form__slider .noUi-handle::after {
+  left: 12px;
+}
