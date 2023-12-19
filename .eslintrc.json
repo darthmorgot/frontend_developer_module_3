@@ -13,6 +13,7 @@
   "extends": "eslint:recommended",
   "globals": {
     "Pristine": "readonly",
-    "noUiSlider": "readonly"
+    "noUiSlider": "readonly",
+    "L": "readonly"
   }
 }
