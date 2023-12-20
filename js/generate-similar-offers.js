@@ -1,6 +1,3 @@
-import {createListOffers} from './create-offers.js';
-
-const OFFER_COUNT = 1;
 const TYPES = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
@@ -17,10 +14,8 @@ const similarOffersTemplate = document.querySelector('#card')
 /**
  * Функция выводит на страницу список похожих объявлений.
  */
-const renderListSimilarOffers = () => {
-  const listSimilarOffers = createListOffers(OFFER_COUNT);
-
-  listSimilarOffers.forEach(({author, offer, location}) => {
+const renderListSimilarOffers = (fn) => {
+  fn.forEach(({author, offer}) => {
     const offerElement = similarOffersTemplate.cloneNode(true);
 
     const features = offerElement.querySelector('.popup__features');
