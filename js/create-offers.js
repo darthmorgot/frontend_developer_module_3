@@ -46,7 +46,7 @@ const createOffer = () => {
       lat: coordOne,
       lng: coordTwo
     }
-  }
+  };
 };
 
 /**
@@ -56,4 +56,4 @@ const createOffer = () => {
  */
 const createListOffers = (count) => createArray(count, createOffer);
 
-export {createListOffers}
+export {createListOffers};
