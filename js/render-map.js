@@ -1,6 +1,6 @@
 import {activateForm, deactivateForm} from './manage-form.js';
 import {createListOffers} from './create-offers.js';
-import {renderSimilarOffer} from './generate-similar-offers.js';
+import {renderSimilarOffer} from './generate-offer.js';
 
 const OFFER_COUNT = 10;
 const addressField = document.querySelector('#address');
