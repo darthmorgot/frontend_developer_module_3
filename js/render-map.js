@@ -1,14 +1,16 @@
 import {activateForm, deactivateForm} from './manage-form.js';
 import {createListOffers} from './create-offers.js';
-import {renderListSimilarOffers} from './generate-similar-offers.js';
+import {renderSimilarOffer} from './generate-similar-offers.js';
 
 const OFFER_COUNT = 10;
 const addressField = document.querySelector('#address');
 const arrayOffers = createListOffers(OFFER_COUNT);
 
 deactivateForm();
-renderListSimilarOffers(arrayOffers);
 
+/**
+ * Функция для вывода интерактивной карты на страницу.
+ */
 const renderMap = () => {
   const map = L.map('map-canvas')
     .on('load', () => {
@@ -32,6 +34,12 @@ const renderMap = () => {
     iconAnchor: [26, 52],
   });
 
+  const pinIcon = L.icon({
+    iconUrl: './img/pin.svg',
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+  });
+
   const mainPinMarker = L.marker(
     {
       lat: 35.681729,
@@ -52,13 +60,29 @@ const renderMap = () => {
     addressField.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
   });
 
-  arrayOffers.forEach(({location}) => {
-    const marker = L.marker({
-      lat: location.lat,
-      lng: location.lng,
-    });
+  const markerGroup = L.layerGroup().addTo(map);
 
-    marker.addTo(map);
+  const createMarker = (item) => {
+    const {lat, lng} = item.location;
+    const {author, offer} = item;
+
+    const marker = L.marker(
+      {
+        lat,
+        lng,
+      },
+      {
+        icon: pinIcon,
+      }
+    );
+
+    marker
+      .addTo(markerGroup)
+      .bindPopup(renderSimilarOffer({author, offer}));
+  };
+
+  arrayOffers.forEach((item) => {
+    createMarker(item);
   });
 };
 
