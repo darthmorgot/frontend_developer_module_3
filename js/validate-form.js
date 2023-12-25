@@ -64,7 +64,7 @@ const showSuccessMessage = () => {
 };
 
 /**
- * Функция валидации формы.
+ * Функция валидации и отпраки формы.
  */
 const setUserFormSubmit = () => {
   form.addEventListener('submit', (evt) => {
