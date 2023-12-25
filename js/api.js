@@ -1,3 +1,7 @@
+/**
+ * Функция для запроса данных с сервера.
+ * @param onSuccess Функция для обработки данных при успешном выполнении запроса.
+ */
 const getData = (onSuccess) => {
   fetch('https://25.javascript.pages.academy/keksobooking/data')
     .then((response) => response.json())
@@ -6,6 +10,12 @@ const getData = (onSuccess) => {
     })
 };
 
+/**
+ * Функция для отправки данных на сервер.
+ * @param onSuccess Функция, вызываемая при успешной отправке данных.
+ * @param onFail Функция, вызываемая при неудачной отправке данных.
+ * @param body Данные, отправляемые на сервер.
+ */
 const sendData = (onSuccess, onFail, body) => {
   fetch(
     'https://25.javascript.pages.academ/keksobooking',
