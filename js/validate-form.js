@@ -1,6 +1,7 @@
 import {synchronizeTimeInTimeOut} from './validate-timein-timeout.js';
 import {validatePrice} from './validate-price.js';
 import {validateRoomsPlaces} from './validate-rooms-places.js';
+import {sendData} from './api.js';
 
 const body = document.querySelector('body');
 const form = document.querySelector('.ad-form');
@@ -65,18 +66,26 @@ const showSuccessMessage = () => {
 /**
  * Функция валидации формы.
  */
-const formValidate = () => {
+const setUserFormSubmit = () => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
     const isValid = pristine.validate();
 
     if (isValid) {
-      showSuccessMessage();
+      sendData(
+        () => {
+          showSuccessMessage();
+        },
+        () => {
+          showErrorMessage();
+        },
+        new FormData(evt.target)
+      );
     } else {
       showErrorMessage();
     }
   });
 };
 
-export {formValidate};
+export {setUserFormSubmit};
