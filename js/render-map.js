@@ -1,6 +1,7 @@
 import {activateForm, deactivateForm} from './manage-form.js';
 import {createListOffers} from './create-offers.js';
 import {renderSimilarOffer} from './generate-offer.js';
+import {getData} from './api.js';
 
 const OFFER_COUNT = 10;
 const addressField = document.querySelector('#address');
@@ -84,6 +85,10 @@ const renderMap = () => {
   arrayOffers.forEach((item) => {
     createMarker(item);
   });
+
+  getData((offers) => {
+    console.log(offers);
+  })
 };
 
 export {renderMap};
