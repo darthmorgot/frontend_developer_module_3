@@ -1,11 +1,9 @@
 import {activateForm, deactivateForm} from './manage-form.js';
-import {createListOffers} from './create-offers.js';
 import {renderSimilarOffer} from './generate-offer.js';
 import {getData} from './api.js';
+import {showAlert} from './utils.js';
 
-const OFFER_COUNT = 10;
 const addressField = document.querySelector('#address');
-const arrayOffers = createListOffers(OFFER_COUNT);
 
 deactivateForm();
 
@@ -69,8 +67,8 @@ const renderMap = () => {
 
     const marker = L.marker(
       {
-        lat,
-        lng,
+        lat: lat.toFixed(5),
+        lng: lng.toFixed(5),
       },
       {
         icon: pinIcon,
@@ -82,13 +80,14 @@ const renderMap = () => {
       .bindPopup(renderSimilarOffer({author, offer}));
   };
 
-  arrayOffers.forEach((item) => {
-    createMarker(item);
-  });
-
-  getData((offers) => {
-    console.log(offers);
-  })
+  getData(
+    (offers) => {
+      offers.forEach((item) => createMarker(item));
+    },
+    (err) => {
+      showAlert(err);
+    }
+  )
 };
 
 export {renderMap};
