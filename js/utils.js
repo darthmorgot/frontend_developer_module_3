@@ -33,4 +33,29 @@ const getRandomArrayElement = (arr) => arr[getRandomInteger(0, arr.length - 1)];
  */
 const createArray = (count, fn) => Array.from({length: count}, fn);
 
-export {getRandomInteger, getRandomFloatingPointNumber, getRandomArrayElement, createArray};
+/**
+ * Функция для вывода сообщения об ошибке.
+ * @param message Строка сообщения об ошибке.
+ */
+const showAlert = (message) => {
+  const map = document.querySelector('.map');
+
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = 1000;
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.left = 0;
+  alertContainer.style.top = 0;
+  alertContainer.style.right = 0;
+  alertContainer.style.padding = '5px 0';
+  alertContainer.style.fontSize = '30px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = '#c00';
+  alertContainer.style.color = '#fff';
+  alertContainer.style.fontSize = '24px';
+
+  alertContainer.textContent = message;
+
+  map.append(alertContainer);
+}
+
+export {getRandomInteger, getRandomFloatingPointNumber, getRandomArrayElement, createArray, showAlert};
