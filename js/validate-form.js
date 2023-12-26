@@ -82,8 +82,6 @@ const setUserFormSubmit = () => {
         },
         new FormData(evt.target)
       );
-    } else {
-      showErrorMessage();
     }
   });
 };
