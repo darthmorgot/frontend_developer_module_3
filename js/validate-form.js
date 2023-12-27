@@ -2,11 +2,13 @@ import {synchronizeTimeInTimeOut} from './validate-timein-timeout.js';
 import {validatePrice} from './validate-price.js';
 import {validateRoomsPlaces} from './validate-rooms-places.js';
 import {sendData} from './api.js';
+import {resetMainMarker} from './render-map.js';
 
 const body = document.querySelector('body');
 const form = document.querySelector('.ad-form');
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
+const filters = document.querySelector('.map__filters');
 
 const pristine = new Pristine(form, {
   classTo: 'ad-form__validate',
@@ -59,8 +61,6 @@ const showSuccessMessage = () => {
   deleteMessage(successMessage);
 
   body.append(successMessage);
-  form.submit();
-  form.reset();
 };
 
 /**
@@ -76,6 +76,10 @@ const setUserFormSubmit = () => {
       sendData(
         () => {
           showSuccessMessage();
+          form.submit();
+          form.reset();
+          filters.reset();
+          resetMainMarker();
         },
         () => {
           showErrorMessage();
@@ -86,4 +90,15 @@ const setUserFormSubmit = () => {
   });
 };
 
-export {setUserFormSubmit};
+/**
+ * Функция для сброса формы фильтров.
+ */
+const resetForm = () => {
+  const resetButton = document.querySelector('.ad-form__reset');
+
+  resetButton.addEventListener('click', () => {
+    filters.reset();
+  });
+};
+
+export {setUserFormSubmit, resetForm};
