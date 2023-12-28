@@ -2,7 +2,7 @@ import {synchronizeTimeInTimeOut} from './validate-timein-timeout.js';
 import {validatePrice} from './validate-price.js';
 import {validateRoomsPlaces} from './validate-rooms-places.js';
 import {sendData} from './api.js';
-import {resetMainMarker} from './render-map.js';
+import {resetMapMainMarker} from './render-map.js';
 
 const body = document.querySelector('body');
 const form = document.querySelector('.ad-form');
@@ -79,7 +79,7 @@ const setUserFormSubmit = () => {
           form.submit();
           form.reset();
           filters.reset();
-          resetMainMarker();
+          resetMapMainMarker();
         },
         () => {
           showErrorMessage();
