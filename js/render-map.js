@@ -1,8 +1,9 @@
 import {activateForm, deactivateForm} from './manage-form.js';
 import {renderSimilarOffer} from './generate-offer.js';
 import {getData} from './api.js';
-import {showAlert} from './utils.js';
+import {showAlert, getRandomInteger} from './utils.js';
 
+const OFFER_COUNT = 10;
 const addressField = document.querySelector('#address');
 const resetButton = document.querySelector('.ad-form__reset');
 
@@ -49,9 +50,14 @@ const mainPinMarker = L.marker(
 );
 
 /**
- * Функция для возврата адресного маркера в исходное положение.
+ * Функция для возврата карты и адресного маркера в исходное положение.
  */
-const resetMainMarker = () => {
+const resetMapMainMarker = () => {
+  map.setView({
+    lat: 35.681729,
+    lng: 139.753927,
+  }, 13);
+
   mainPinMarker.setLatLng({
     lat: 35.681729,
     lng: 139.753927,
@@ -62,6 +68,7 @@ const resetMainMarker = () => {
  * Функция для вывода интерактивной карты на страницу.
  */
 const renderMap = () => {
+  const startCount = getRandomInteger(0, 40);
   mainPinMarker.addTo(map);
 
   mainPinMarker.on('moveend', (evt) => {
@@ -89,23 +96,23 @@ const renderMap = () => {
     marker
       .addTo(markerGroup)
       .bindPopup(renderSimilarOffer({author, offer}));
+
+    resetButton.addEventListener('click', () => {
+      const popup = document.querySelector('.leaflet-popup');
+      if (popup) marker.closePopup();
+
+      resetMapMainMarker();
+    });
   };
 
   getData(
     (offers) => {
-      offers.forEach((item) => createMarker(item));
+      offers.slice(startCount, startCount + OFFER_COUNT).forEach((item) => createMarker(item));
     },
     (err) => {
       showAlert(err);
     }
   );
-
-  resetButton.addEventListener('click', () => {
-    const popup = document.querySelector('.leaflet-popup');
-    if (popup) popup.remove();
-
-    resetMainMarker();
-  });
 };
 
-export {renderMap, resetMainMarker};
+export {renderMap, resetMapMainMarker};
