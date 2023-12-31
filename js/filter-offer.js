@@ -1,10 +1,12 @@
-const filterOffer = (offers, offerSlice, markerGroup, cb) => {
+/**
+ * Функция для фильтрации объявлений по типу жилья.
+ * @param offers Массив всех объявлений.
+ * @param offerSlice Массив из 10 случайно выбранных объявлений.
+ * @param markerGroup Слой карты, куда добавляются маркеры объявлений.
+ * @param cb Функция для создания и добавления маркеров на карту.
+ */
+const filterByType = (offers, offerSlice, markerGroup, cb) => {
   const selectedType = document.querySelector('#housing-type');
-  const selectedPrice = document.querySelector('#housing-price');
-  const selectedRoom = document.querySelector('#housing-rooms');
-  const selectedGuests = document.querySelector('#housing-guests');
-  const selectedFeature = document.querySelector('#housing-features');
-
 
   selectedType.addEventListener('change', () => {
     const offerByType = offers.filter((item) => item.offer.type === selectedType.value);
@@ -12,6 +14,17 @@ const filterOffer = (offers, offerSlice, markerGroup, cb) => {
     offerByType.slice(0, 10).forEach((item) => cb(item));
     if (selectedType.value === 'any') offerSlice.forEach((item) => cb(item));
   });
+};
+
+/**
+ * Функция для фильтрации объявлений по цене на ночь.
+ * @param offers Массив всех объявлений.
+ * @param offerSlice Массив из 10 случайно выбранных объявлений.
+ * @param markerGroup Слой карты, куда добавляются маркеры объявлений.
+ * @param cb Функция для создания и добавления маркеров на карту.
+ */
+const filterByPrice = (offers, offerSlice, markerGroup, cb) => {
+  const selectedPrice = document.querySelector('#housing-price');
 
   selectedPrice.addEventListener('change', () => {
     let offerByPrice;
@@ -31,13 +44,35 @@ const filterOffer = (offers, offerSlice, markerGroup, cb) => {
     markerGroup.clearLayers();
     offerByPrice.forEach((item) => cb(item));
   });
+};
 
-  selectedRoom.addEventListener('change', () => {
-    const offerByRoom = offers.filter((item) => item.offer.rooms === parseInt(selectedRoom.value));
+/**
+ * Функция для фильтрации объявлений по количеству комнат.
+ * @param offers Массив всех объявлений.
+ * @param offerSlice Массив из 10 случайно выбранных объявлений.
+ * @param markerGroup Слой карты, куда добавляются маркеры объявлений.
+ * @param cb Функция для создания и добавления маркеров на карту.
+ */
+const filterByRooms = (offers, offerSlice, markerGroup, cb) => {
+  const selectedRooms = document.querySelector('#housing-rooms');
+
+  selectedRooms.addEventListener('change', () => {
+    const offerByRoom = offers.filter((item) => item.offer.rooms === parseInt(selectedRooms.value));
     markerGroup.clearLayers();
     offerByRoom.slice(0, 10).forEach((item) => cb(item));
-    if (selectedRoom.value === 'any') offerSlice.forEach((item) => cb(item));
+    if (selectedRooms.value === 'any') offerSlice.forEach((item) => cb(item));
   });
+};
+
+/**
+ * Функция для фильтрации объявлений по количеству гостей.
+ * @param offers Массив всех объявлений.
+ * @param offerSlice Массив из 10 случайно выбранных объявлений.
+ * @param markerGroup Слой карты, куда добавляются маркеры объявлений.
+ * @param cb Функция для создания и добавления маркеров на карту.
+ */
+const filterByGuests = (offers, offerSlice, markerGroup, cb) => {
+  const selectedGuests = document.querySelector('#housing-guests');
 
   selectedGuests.addEventListener('change', () => {
     const offerByGuests = offers.filter((item) => item.offer.guests === parseInt(selectedGuests.value));
@@ -45,9 +80,25 @@ const filterOffer = (offers, offerSlice, markerGroup, cb) => {
     offerByGuests.slice(0, 10).forEach((item) => cb(item));
     if (selectedGuests.value === 'any') offerSlice.forEach((item) => cb(item));
   });
+};
 
+/**
+ * Функция для фильтрации объявлений по типу и количеству удобств.
+ * @param offers Массив всех объявлений.
+ * @param offerSlice Массив из 10 случайно выбранных объявлений.
+ * @param markerGroup Слой карты, куда добавляются маркеры объявлений.
+ * @param cb Функция для создания и добавления маркеров на карту.
+ */
+const filterByFeature = (offers, offerSlice, markerGroup, cb) => {
+  const selectedFeature = document.querySelector('#housing-features');
   let featureList = [];
   let checkedFeature = [];
+
+  /**
+   * Функция для вычисления веса объявления по количеству удобств.
+   * @param offer Объект объявления.
+   * @returns {number} Вес объявления.
+   */
   const getOfferRank = (offer) => {
     let rank = 0;
 
@@ -60,6 +111,12 @@ const filterOffer = (offers, offerSlice, markerGroup, cb) => {
     return rank;
   };
 
+  /**
+   * Функция для сравнения веса объявлений.
+   * @param offerA Первое объявление.
+   * @param offerB Второе объявление.
+   * @returns {number} Число, указывающее место объявления в массиве.
+   */
   const compareOffers = (offerA, offerB) => {
     const rankA = getOfferRank(offerA);
     const rankB = getOfferRank(offerB);
@@ -88,4 +145,4 @@ const filterOffer = (offers, offerSlice, markerGroup, cb) => {
   });
 };
 
-export {filterOffer};
+export {filterByType, filterByPrice, filterByRooms, filterByGuests, filterByFeature};
