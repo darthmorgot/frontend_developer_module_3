@@ -2,7 +2,7 @@ import {activateForm, deactivateForm} from './manage-form.js';
 import {renderSimilarOffer} from './generate-offer.js';
 import {getData} from './api.js';
 import {showAlert, getRandomInteger} from './utils.js';
-import {filterByType, filterByPrice, filterByRooms, filterByGuests, filterByFeature} from './filter-offer.js';
+import {filterByAll} from './filter-offer.js';
 
 const OFFER_COUNT = 10;
 const addressField = document.querySelector('#address');
@@ -111,13 +111,8 @@ const renderMap = () => {
     (offers) => {
       const offerSlice = offers.slice(startCount, startCount + OFFER_COUNT);
       offerSlice.forEach((item) => createMarker(item));
-      const test = [1, 2, 3, 4, 5];
 
-      filterByType(offers, offerSlice, markerGroup, createMarker, test);
-      filterByPrice(offers, offerSlice, markerGroup, createMarker, test);
-      filterByRooms(offers, offerSlice, markerGroup, createMarker, test);
-      filterByGuests(offers, offerSlice, markerGroup, createMarker, test);
-      filterByFeature(offers, offerSlice, markerGroup, createMarker, test);
+      filterByAll(offers, offerSlice, markerGroup, createMarker);
     },
     (err) => {
       showAlert(err);
