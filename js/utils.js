@@ -58,4 +58,25 @@ const showAlert = (message) => {
   map.append(alertContainer);
 }
 
-export {getRandomInteger, getRandomFloatingPointNumber, getRandomArrayElement, createArray, showAlert};
+/**
+ * Функция для устранения дребезга.
+ * @param callback Функция обратного вызова.
+ * @param timeoutDelay Время задержки.
+ * @returns {(function(...[*]): void)|*} Возвращаемая функция.
+ */
+const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+export {
+  getRandomInteger,
+  getRandomFloatingPointNumber,
+  getRandomArrayElement,
+  createArray,
+  showAlert,
+  debounce
+};
