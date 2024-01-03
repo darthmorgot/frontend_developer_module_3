@@ -7,6 +7,7 @@ import {filterByAll} from './filter-offer.js';
 const OFFER_COUNT = 10;
 const addressField = document.querySelector('#address');
 const resetButton = document.querySelector('.ad-form__reset');
+const startCount = getRandomInteger(0, 40);
 
 deactivateForm();
 
@@ -53,17 +54,23 @@ const mainPinMarker = L.marker(
 );
 
 /**
- * Функция для возврата карты и адресного маркера в исходное положение.
+ * Функция для скрытия попапа, и возврата карты и адресного маркера в исходное положение.
+ * @param marker Объект маркера.
  */
-const resetMapMainMarker = () => {
-  map.setView({
-    lat: 35.681729,
-    lng: 139.753927,
-  }, 13);
+const resetMapMainMarker = (marker) => {
+  resetButton.addEventListener('click', () => {
+    const popup = document.querySelector('.leaflet-popup');
+    if (popup) marker.closePopup();
 
-  mainPinMarker.setLatLng({
-    lat: 35.681729,
-    lng: 139.753927,
+    map.setView({
+      lat: 35.681729,
+      lng: 139.753927,
+    }, 13);
+
+    mainPinMarker.setLatLng({
+      lat: 35.681729,
+      lng: 139.753927,
+    });
   });
 };
 
@@ -71,8 +78,6 @@ const resetMapMainMarker = () => {
  * Функция для вывода интерактивной карты на страницу.
  */
 const renderMap = () => {
-  const startCount = getRandomInteger(0, 40);
-
   mainPinMarker.addTo(map);
 
   mainPinMarker.on('moveend', (evt) => {
@@ -80,44 +85,43 @@ const renderMap = () => {
     const lng = evt.target.getLatLng().lng;
     addressField.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
   });
+};
 
-  const createMarker = (item) => {
-    const {lat, lng} = item.location;
-    const {author, offer} = item;
+/**
+ * Функция для вывода на карте маркеров объявлений.
+ * @param item Объект объявления.
+ */
+const createMarker = (item) => {
+  const {lat, lng} = item.location;
+  const {author, offer} = item;
 
-    const marker = L.marker(
-      {
-        lat: lat.toFixed(5),
-        lng: lng.toFixed(5),
-      },
-      {
-        icon: pinIcon,
-      }
-    );
-
-    marker
-      .addTo(markerGroup)
-      .bindPopup(renderSimilarOffer({author, offer}));
-
-    resetButton.addEventListener('click', () => {
-      const popup = document.querySelector('.leaflet-popup');
-      if (popup) marker.closePopup();
-
-      resetMapMainMarker();
-    });
-  };
-
-  getData(
-    (offers) => {
-      const offerSlice = offers.slice(startCount, startCount + OFFER_COUNT);
-      offerSlice.forEach((item) => createMarker(item));
-
-      filterByAll(offers, offerSlice, markerGroup, createMarker);
+  const marker = L.marker(
+    {
+      lat: lat.toFixed(5),
+      lng: lng.toFixed(5),
     },
-    (err) => {
-      showAlert(err);
+    {
+      icon: pinIcon,
     }
   );
+
+  marker
+    .addTo(markerGroup)
+    .bindPopup(renderSimilarOffer({author, offer}));
+
+  resetMapMainMarker(marker);
 };
+
+getData(
+  (offers) => {
+    const offerSlice = offers.slice(startCount, startCount + OFFER_COUNT);
+    offerSlice.forEach((item) => createMarker(item));
+
+    filterByAll(offers, offerSlice, markerGroup, createMarker);
+  },
+  (err) => {
+    showAlert(err);
+  }
+);
 
 export {renderMap, resetMapMainMarker};
