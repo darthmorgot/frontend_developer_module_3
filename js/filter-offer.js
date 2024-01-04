@@ -1,4 +1,5 @@
 import {debounce} from './utils.js';
+import {resetForm} from './reset-form.js';
 
 const PRICES = {
   middle: 10000,
@@ -58,77 +59,27 @@ const checkByGuests = (offer, guestValue) => {
   return offer.offer.guests === +guestValue || guestValue === DEFAULT_VALUE;
 };
 
-// /**
-//  * Функция для фильтрации объявлений по типу и количеству удобств.
-//  * @param array Массив всех объявлений.
-//  * @param arraySlice Массив из 10 случайно выбранных объявлений.
-//  * @param layer Слой карты, куда добавляются маркеры объявлений.
-//  * @param cb Функция для создания и добавления маркеров на карту.
-//  */
-// const checkByFeature = (array, arraySlice, layer, cb) => {
-//   let featureList = [];
-//   let checkedFeature = [];
-//
-//   /**
-//    * Функция для вычисления веса объявления по количеству удобств.
-//    * @param offer Объект объявления.
-//    * @returns {number} Вес объявления.
-//    */
-//   const getOfferRank = (offer) => {
-//     let rank = 0;
-//
-//     for (const feature of featureList) {
-//       if (offer.offer.features && offer.offer.features.includes(feature)) {
-//         rank += 1;
-//       }
-//     }
-//
-//     return rank;
-//   };
-//
-//   /**
-//    * Функция для сравнения веса объявлений.
-//    * @param offerA Первое объявление.
-//    * @param offerB Второе объявление.
-//    * @returns {number} Число, указывающее место объявления в массиве.
-//    */
-//   const compareOffers = (offerA, offerB) => {
-//     const rankA = getOfferRank(offerA);
-//     const rankB = getOfferRank(offerB);
-//
-//     return rankB - rankA;
-//   };
-//
-//   selectedFeature.addEventListener('change', (evt) => {
-//     const offerByFeature = array.slice();
-//     if (evt.target.value) {
-//       if (evt.target.checked) {
-//         selectedFeature.setAttribute('checked', 'true');
-//         featureList.push(evt.target.value);
-//         checkedFeature.push('check');
-//
-//         layer.clearLayers();
-//         offerByFeature.sort(compareOffers).slice(0, 10).forEach((item) => cb(item));
-//       } else if (!evt.target.checked) {
-//         checkedFeature.pop();
-//       }
-//       if (checkedFeature.length === 0) {
-//         layer.clearLayers();
-//         arraySlice.forEach((item) => cb(item));
-//       }
-//     }
-//   });
-// };
-
-const checkByFeature = (offer, featureValue) => {
+/**
+ * Функция для проверки объявлений по типу и количеству удобств.
+* @param offer Объект объявления.
+* @param featureList Список удобств.
+*/
+const checkByFeature = (offer, featureList) => {
+  if (!featureList.length) return true;
   if (offer.offer.features) {
-    return offer.offer.features.includes(featureValue);
+    return featureList.every((item) => offer.offer.features.includes(item));
   }
 };
 
+/**
+ * Функция для создания массива проверенных объявлений.
+ * @param array Исходный массив объявлений.
+ * @returns {*[]} Возвращаемый отфильтрованный массив.
+ */
 const getCheckedOffers = (array) => {
   let checkedOffers = [];
   let featureList = [];
+
   for (let feature of features) {
     if (feature.checked) {
       featureList.push(feature.value);
@@ -140,7 +91,8 @@ const getCheckedOffers = (array) => {
       checkByType(arrayElement, selectedType.value) &&
       checkByPrice(arrayElement, selectedPrice.value) &&
       checkByRooms(arrayElement, selectedRooms.value) &&
-      checkByGuests(arrayElement, selectedGuests.value)
+      checkByGuests(arrayElement, selectedGuests.value) &&
+      checkByFeature(arrayElement, featureList)
     ) {
       checkedOffers.push(arrayElement);
     }
@@ -148,24 +100,35 @@ const getCheckedOffers = (array) => {
   if (checkedOffers.length === array.length) {
     checkedOffers = [];
   }
-  console.log(checkedOffers);
 
+  console.log(checkedOffers);
   return checkedOffers;
 };
 
-const filterByAll = (array, arraySlice, layer, cb) => {
+/**
+ * Функция для вывода объявлений, отфильтрованных по выбранным признакам.
+ * @param array Исходный массив объявлений.
+ * @param cb Функция для создания и добавления маркеров на карту.
+ */
+const filterByAll = (array, cb) => {
   formFilters.addEventListener('change', debounce(() => {
     let arrCheckedOffers = getCheckedOffers(array);
-    layer.clearLayers();
+
     if (arrCheckedOffers.length !== 0) {
-      arrCheckedOffers.slice(0, 10).forEach((item) => cb(item));
+      cb(array, arrCheckedOffers.slice(0, 10));
+    } else if (
+      selectedType.value === DEFAULT_VALUE &&
+      selectedPrice.value === DEFAULT_VALUE &&
+      selectedRooms.value === DEFAULT_VALUE &&
+      selectedGuests.value === DEFAULT_VALUE
+    ) {
+      cb(array);
     } else {
-      arrCheckedOffers.slice(0, 10).forEach((item) => cb(item));
-      // arraySlice.forEach((item) => cb(item));
+      cb(array, []);
     }
   }));
 
-  // checkByFeature(array, arraySlice, layer, cb);
+  resetForm(cb, array);
 };
 
 export {filterByAll};
