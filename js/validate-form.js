@@ -8,7 +8,6 @@ const body = document.querySelector('body');
 const form = document.querySelector('.ad-form');
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
-const filters = document.querySelector('.map__filters');
 
 const pristine = new Pristine(form, {
   classTo: 'ad-form__validate',
@@ -78,7 +77,6 @@ const setUserFormSubmit = () => {
           showSuccessMessage();
           form.submit();
           form.reset();
-          filters.reset();
           resetMapMainMarker();
         },
         () => {
@@ -90,15 +88,4 @@ const setUserFormSubmit = () => {
   });
 };
 
-/**
- * Функция для сброса формы фильтров.
- */
-const resetForm = () => {
-  const resetButton = document.querySelector('.ad-form__reset');
-
-  resetButton.addEventListener('click', () => {
-    filters.reset();
-  });
-};
-
-export {setUserFormSubmit, resetForm};
+export {setUserFormSubmit};
