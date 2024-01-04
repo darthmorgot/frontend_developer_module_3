@@ -3,10 +3,10 @@ import {renderSimilarOffer} from './generate-offer.js';
 import {getData} from './api.js';
 import {showAlert, getRandomInteger} from './utils.js';
 import {filterByAll} from './filter-offer.js';
+import {resetForm} from './reset-form.js';
 
 const OFFER_COUNT = 10;
 const addressField = document.querySelector('#address');
-const resetButton = document.querySelector('.ad-form__reset');
 const startCount = getRandomInteger(0, 40);
 
 deactivateForm();
@@ -58,19 +58,19 @@ const mainPinMarker = L.marker(
  * @param marker Объект маркера.
  */
 const resetMapMainMarker = (marker) => {
-  resetButton.addEventListener('click', () => {
+  if (marker) {
     const popup = document.querySelector('.leaflet-popup');
     if (popup) marker.closePopup();
+  }
 
-    map.setView({
-      lat: 35.681729,
-      lng: 139.753927,
-    }, 13);
+  map.setView({
+    lat: 35.681729,
+    lng: 139.753927,
+  }, 13);
 
-    mainPinMarker.setLatLng({
-      lat: 35.681729,
-      lng: 139.753927,
-    });
+  mainPinMarker.setLatLng({
+    lat: 35.681729,
+    lng: 139.753927,
   });
 };
 
@@ -88,7 +88,7 @@ const renderMap = () => {
 };
 
 /**
- * Функция для вывода на карте маркеров объявлений.
+ * Функция для создания маркера объявления.
  * @param item Объект объявления.
  */
 const createMarker = (item) => {
@@ -109,15 +109,31 @@ const createMarker = (item) => {
     .addTo(markerGroup)
     .bindPopup(renderSimilarOffer({author, offer}));
 
-  resetMapMainMarker(marker);
+  resetForm(resetMapMainMarker, marker);
+};
+
+/**
+ * Функция для вывода маркеров объявлений на карте.
+ * @param offers
+ * @param checkedOffers
+ */
+const renderMarkers = (offers, checkedOffers) => {
+  const offerSlice = offers.slice(startCount, startCount + OFFER_COUNT);
+
+  if (checkedOffers) {
+    markerGroup.clearLayers();
+    checkedOffers.forEach((item) => createMarker(item));
+  } else {
+    markerGroup.clearLayers();
+    offerSlice.forEach((item) => createMarker(item));
+  }
 };
 
 getData(
   (offers) => {
-    const offerSlice = offers.slice(startCount, startCount + OFFER_COUNT);
-    offerSlice.forEach((item) => createMarker(item));
+    renderMarkers(offers);
 
-    filterByAll(offers, offerSlice, markerGroup, createMarker);
+    filterByAll(offers, renderMarkers);
   },
   (err) => {
     showAlert(err);
