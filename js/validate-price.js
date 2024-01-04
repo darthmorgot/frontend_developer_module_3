@@ -1,3 +1,5 @@
+import {resetForm} from './reset-form.js';
+
 const form = document.querySelector('.ad-form');
 
 const pristine = new Pristine(form, {
@@ -39,9 +41,15 @@ noUiSlider.create(sliderElement, {
   },
 });
 
+const setSlider = (value) => {
+  sliderElement.noUiSlider.set(value);
+};
+
 priceField.addEventListener('change', (evt) => {
-  sliderElement.noUiSlider.set(evt.target.value);
+  setSlider(evt.target.value);
 });
+
+resetForm(setSlider, 5000);
 
 /**
  * Функция для получения сообщения об ошибке.
