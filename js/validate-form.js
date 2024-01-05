@@ -3,6 +3,7 @@ import {validatePrice} from './validate-price.js';
 import {validateRoomsPlaces} from './validate-rooms-places.js';
 import {sendData} from './api.js';
 import {resetMapMainMarker} from './render-map.js';
+import {uploadPhotos} from './upload-photos.js';
 
 const body = document.querySelector('body');
 const form = document.querySelector('.ad-form');
@@ -16,6 +17,7 @@ const pristine = new Pristine(form, {
   errorTextClass: 'ad-form__error',
 });
 
+uploadPhotos();
 validatePrice();
 validateRoomsPlaces();
 synchronizeTimeInTimeOut();
