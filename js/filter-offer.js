@@ -101,7 +101,6 @@ const getCheckedOffers = (array) => {
     checkedOffers = [];
   }
 
-  console.log(checkedOffers);
   return checkedOffers;
 };
 
