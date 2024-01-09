@@ -2,7 +2,7 @@
   "name": "keksobooking",
   "version": "1.0.0",
   "description": "Личный проект «Pink» от HTML Academy, Профессия «Фронтенд-разработчик 2», Модуль 3. JavaScript. Профессиональная разработка веб-интерфейсов",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "start": "browser-sync start --config bs-config.js"
   },
